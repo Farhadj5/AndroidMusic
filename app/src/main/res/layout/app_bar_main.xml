@@ -19,6 +19,14 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+            android:id="@+id/alarmButton"
+            android:clickable="true"
+            android:layout_weight="1" />
+
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />

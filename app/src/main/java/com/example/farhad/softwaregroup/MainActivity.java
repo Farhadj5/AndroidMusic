@@ -1,5 +1,7 @@
 package com.example.farhad.softwaregroup;
 
+import android.view.View.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
         //implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        ImageButton btn = (ImageButton) findViewById(R.id.alarmButton);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AlarmActivity.class));
+            }
+        });
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
     }
@@ -58,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
+
+
 /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
