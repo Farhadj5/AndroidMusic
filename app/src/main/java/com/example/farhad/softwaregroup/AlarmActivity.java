@@ -24,17 +24,18 @@ public class AlarmActivity extends Activity {
     private static AlarmActivity inst;
     private TextView alarmTextView;
 
+    //no idea
     public static AlarmActivity instance() {
         return inst;
     }
 
-    @Override
+    //no idea
     public void onStart() {
         super.onStart();
         inst = this;
     }
 
-    @Override
+    //sets variables.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
@@ -46,6 +47,7 @@ public class AlarmActivity extends Activity {
 
     }
 
+    //handles the toggle button code.
     public void onToggleClicked(View view) {
         if (((ToggleButton) view).isChecked()) {
             Log.d("MyActivity", "Alarm On");
@@ -63,9 +65,12 @@ public class AlarmActivity extends Activity {
         }
     }
 
+    //sets the text underneath the alarm
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);
     }
+
+    //What to do when the back button is pressed. Sends to the main screen
     public void onBackPressed(){
         Intent prevActivityIntent = new Intent(AlarmActivity.this, MainActivity.class);
         startActivity(prevActivityIntent);

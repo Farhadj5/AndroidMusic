@@ -20,15 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
-    @Override
+    //called when alarm is scheduled to go off.
     public void onReceive(final Context context, Intent intent) {
         //this will update the UI with message
         AlarmActivity inst = AlarmActivity.instance();
         inst.setAlarmText("Alarm!!!");
 
         //this will sound the alarm tone
-        //this will sound the alarm once, if you wish to
-        //raise alarm in loop continuously then use MediaPlayer and setLooping(true)
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -41,14 +39,19 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 AlarmService.class.getName());
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
+
+        //another little notification to be more annoying
         Toast toast = Toast.makeText(context, "ALARM!!!", Toast.LENGTH_LONG);
         toast.show();
 
+        //lets the ringtone go about 3 times before stopping
         try{
             TimeUnit.SECONDS.sleep(6);
         }catch(InterruptedException e){
             Log.d("couldnt run","couldnt sleep");
         }
+
+        //ends ringtone
         ringtone.stop();
     }
 }
