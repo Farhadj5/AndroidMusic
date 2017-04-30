@@ -282,46 +282,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void getData() {
-
-        String url = LOGIN_URL;
-
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                showJSON(response);
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    private void showJSON(String response){
-        String JSON_ARRAY = "result";
-        resultNum = "";
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray result = jsonObject.getJSONArray("result");
-            JSONObject loginResult = result.getJSONObject(0);
-            resultNum = loginResult.getString("success");
-            if(resultNum.equals("1")){
-                showProgress(true);
-                mAuthTask = new UserLoginTask(KEY_EMAIL, KEY_PASSWORD);
-                mAuthTask.execute((Void) null);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void registerUser() {
         final String email = mEmailView.getText().toString().trim();
         final String password = mPasswordView.getText().toString().trim();
