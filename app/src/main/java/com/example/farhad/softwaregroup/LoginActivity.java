@@ -6,6 +6,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +44,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,11 +85,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     private Button mRegisterButton;
-
+    private String resultNum;
+    private boolean flag = false;
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_EMAIL = "email";
 
     private static final String REGISTER_URL = "http://162.243.192.229/register.php";
+    private static final String LOGIN_URL = "http://162.243.192.229/login.php";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +186,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+
         if (mAuthTask != null) {
             return;
         }
@@ -185,8 +196,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -209,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -216,11 +228,100 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            final String email_login = mEmailView.getText().toString().trim();
+            final String password_login = mPasswordView.getText().toString().trim();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(LoginActivity.this,response, Toast.LENGTH_LONG).show();
+                            String JSON_ARRAY = "result";
+                            resultNum = "";
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONArray result = jsonObject.getJSONArray("result");
+                                JSONObject loginResult = result.getJSONObject(0);
+                                resultNum = loginResult.getString("success");
+
+                                if(resultNum.equals("1")){
+                                    showProgress(true);
+                                    mAuthTask = new UserLoginTask(email, password);
+                                    mAuthTask.execute((Void) null);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    }){
+                @Override
+                protected Map<String,String> getParams(){
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put(KEY_PASSWORD,password_login);
+                    params.put(KEY_EMAIL, email_login);
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+
+            //if(flag) {
+         //       showProgress(true);
+         //       mAuthTask = new UserLoginTask(email, password);
+        //        mAuthTask.execute((Void) null);
+       //     }
         }
     }
+
+    private void getData() {
+
+        String url = LOGIN_URL;
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                showJSON(response);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void showJSON(String response){
+        String JSON_ARRAY = "result";
+        resultNum = "";
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray("result");
+            JSONObject loginResult = result.getJSONObject(0);
+            resultNum = loginResult.getString("success");
+            if(resultNum.equals("1")){
+                showProgress(true);
+                mAuthTask = new UserLoginTask(KEY_EMAIL, KEY_PASSWORD);
+                mAuthTask.execute((Void) null);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void registerUser() {
         final String email = mEmailView.getText().toString().trim();
         final String password = mPasswordView.getText().toString().trim();
