@@ -1,5 +1,8 @@
 package com.example.farhad.softwaregroup;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +30,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //MEDIA PLAYER DOESNT WORK
+        /*
+        try {
+            MediaPlayer player = new MediaPlayer();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource("http://162.243.192.229/takeonme.mp3");
+            player.prepare();
+            player.start();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+*/
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         //fab.setOnClickListener(new View.OnClickListener() {
         //    @Override
@@ -36,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
         //    }
         //});
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        toggle.syncState();*/
+
+
 
         ImageButton btn = (ImageButton) findViewById(R.id.alarmButton);
 
@@ -49,19 +66,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AlarmActivity.class));
             }
         });
+
+
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
     }
 
     //modified what back button does
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //if (drawer.isDrawerOpen(GravityCompat.START)) {
+        //    drawer.closeDrawer(GravityCompat.START);
+        //} else {
             Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginActivityIntent);
-        }
+        //}
     }
 
     //This creates the top right menu, 3 dots

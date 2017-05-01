@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(LoginActivity.this,response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this,"Successful Login", Toast.LENGTH_LONG).show();
                             String JSON_ARRAY = "result";
                             resultNum = "";
                             try {
@@ -290,7 +290,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(LoginActivity.this,response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"Registration Successful!", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

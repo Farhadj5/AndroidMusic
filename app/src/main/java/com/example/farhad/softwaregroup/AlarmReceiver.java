@@ -22,9 +22,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     //called when alarm is scheduled to go off.
     public void onReceive(final Context context, Intent intent) {
-        //this will update the UI with message
-        AlarmActivity inst = AlarmActivity.instance();
-        inst.setAlarmText("Alarm!!!");
 
         //this will sound the alarm tone
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
