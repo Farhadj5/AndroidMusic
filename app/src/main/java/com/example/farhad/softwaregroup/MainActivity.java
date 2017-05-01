@@ -30,18 +30,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //MEDIA PLAYER DOESNT WORK
-        /*
         try {
             MediaPlayer player = new MediaPlayer();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource("http://162.243.192.229/takeonme.mp3");
+            player.setDataSource("http://162.243.192.229:8080/example1.ogg");
             player.prepare();
             player.start();
-        } catch (Exception e) {
-            // TODO: handle exception
+        }catch(Exception e){
+
         }
-*/
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         //fab.setOnClickListener(new View.OnClickListener() {
         //    @Override

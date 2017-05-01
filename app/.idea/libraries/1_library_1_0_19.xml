@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="1_library-1.0.19">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/e93b2a983592d08fdb51a02c832deddbf08929ef/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/e93b2a983592d08fdb51a02c832deddbf08929ef/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mcxiaoke.volley/library/1.0.19/2bac9e638b022ca09262960f83e8c9da93d80468/library-1.0.19-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
