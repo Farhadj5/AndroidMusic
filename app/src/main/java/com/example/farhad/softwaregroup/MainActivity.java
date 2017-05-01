@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener{
         //implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
             MediaPlayer player = new MediaPlayer();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource("http://162.243.192.229:8080/example1.ogg");
-            player.prepare();
-            player.start();
+            player.setOnPreparedListener(this);
+            player.prepareAsync();
         }catch(Exception e){
 
         }
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onPrepared(MediaPlayer player){
+        player.start();
+    }
 
 
 
