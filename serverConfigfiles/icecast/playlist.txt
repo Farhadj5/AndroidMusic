@@ -1,0 +1,7 @@
+/etc/ices2/music/AllNightLong.ogg
+/etc/ices2/music/DancingInTheBackseat.ogg
+/etc/ices2/music/JaggerBomb.ogg
+/etc/ices2/music/I-3low.ogg
+/etc/ices2/music/RaveDirty.mp3
+/etc/ices2/music/TurbulentRockAnthem.mp3
+/etc/ices2/music/GirlsWhoSaveTheWorld.mp3
