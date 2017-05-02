@@ -1,5 +1,6 @@
 package com.example.farhad.softwaregroup;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private static final String PARSE_URL = "http://162.243.192.229/parse.php";
         private String artist;
         private String title;
+        private boolean mute = false;
+        private ToggleButton toggleButton1, toggleButton2;
+        private Button btnDisplay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +97,34 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
+
+        addListenerOnButton();
+    }
+
+    public void addListenerOnButton() {
+
+        btnDisplay = (Button) findViewById(R.id.btnDisplay);
+
+        btnDisplay.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                StringBuffer result = new StringBuffer();
+
+                int maxVol = 0;
+               // Toast.makeText(MainActivity.this, result.toString(),Toast.LENGTH_SHORT).show();
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                if(mute){
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(maxVol), 0);
+                    mute = false;
+                } else {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+                    mute = true;
+                }
+            }
+
+        });
     }
 
     public void showInfo(){
