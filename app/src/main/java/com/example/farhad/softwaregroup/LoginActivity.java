@@ -236,7 +236,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(LoginActivity.this,"Successful Login", Toast.LENGTH_LONG).show();
                                 String JSON_ARRAY = "result";
                                 resultNum = "";
                                 try {
@@ -246,9 +245,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     resultNum = loginResult.getString("success");
 
                                     if(resultNum.equals("1")){
+                                        Toast.makeText(LoginActivity.this,"Successful Login", Toast.LENGTH_LONG).show();
                                         showProgress(true);
                                         mAuthTask = new UserLoginTask(email, password);
                                         mAuthTask.execute((Void) null);
+                                    } else if(resultNum.equals("0")){
+                                        Toast.makeText(LoginActivity.this,"Incorrect login information, please try again.", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this,"There is no user registered with the entered information, please try again.", Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -290,7 +294,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(LoginActivity.this,"Registration Successful!", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(LoginActivity.this,"Registration Successful!", Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray result = jsonObject.getJSONArray("result");
+                            JSONObject loginResult = result.getJSONObject(0);
+                            resultNum = loginResult.getString("success");
+
+                            if(resultNum.equals("0")){
+                                Toast.makeText(LoginActivity.this,"There is already a user registered with this email, please try again", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this,"Registration Successful!", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
