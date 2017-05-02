@@ -19,10 +19,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener{
         //implements NavigationView.OnNavigationItemSelectedListener {
-
+        private static final String PARSE_URL = "http://162.243.192.229/parse.php";
+        private String artist;
+        private String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +81,54 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
             }
         });
 
+        Button infoButton = (Button) findViewById(R.id.info);
+
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showInfo();
+            }
+        });
 
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void showInfo(){
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, PARSE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this,"Display Info", Toast.LENGTH_LONG).show();
+                        String JSON_ARRAY = "result";
+                        artist = "";
+                        title = "";
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray result = jsonObject.getJSONArray("info");
+                            JSONObject songArtist = result.getJSONObject(0);
+                            JSONObject songTitle = result.getJSONObject(1);
+                            artist = songArtist.getString("artist");
+                            title = songTitle.getString("title");
+
+                            Toast.makeText(MainActivity.this,"Artist: " + artist + " Title: " + title, Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     //modified what back button does

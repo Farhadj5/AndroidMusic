@@ -232,42 +232,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             final String email_login = mEmailView.getText().toString().trim();
             final String password_login = mPasswordView.getText().toString().trim();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(LoginActivity.this,"Successful Login", Toast.LENGTH_LONG).show();
-                            String JSON_ARRAY = "result";
-                            resultNum = "";
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                JSONArray result = jsonObject.getJSONArray("result");
-                                JSONObject loginResult = result.getJSONObject(0);
-                                resultNum = loginResult.getString("success");
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(LoginActivity.this,"Successful Login", Toast.LENGTH_LONG).show();
+                                String JSON_ARRAY = "result";
+                                resultNum = "";
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONArray result = jsonObject.getJSONArray("result");
+                                    JSONObject loginResult = result.getJSONObject(0);
+                                    resultNum = loginResult.getString("success");
 
-                                if(resultNum.equals("1")){
-                                    showProgress(true);
-                                    mAuthTask = new UserLoginTask(email, password);
-                                    mAuthTask.execute((Void) null);
+                                    if(resultNum.equals("1")){
+                                        showProgress(true);
+                                        mAuthTask = new UserLoginTask(email, password);
+                                        mAuthTask.execute((Void) null);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                        }
-                    }){
-                @Override
-                protected Map<String,String> getParams(){
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put(KEY_PASSWORD,password_login);
-                    params.put(KEY_EMAIL, email_login);
-                    return params;
-                }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String,String> getParams(){
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put(KEY_PASSWORD,password_login);
+                        params.put(KEY_EMAIL, email_login);
+                        return params;
+                    }
 
             };
 
