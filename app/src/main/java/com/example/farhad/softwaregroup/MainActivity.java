@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -43,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private String artist;
         private String title;
         private boolean mute = false;
+        private boolean called = false;
+        private boolean tracked = false;
         private ToggleButton toggleButton1, toggleButton2;
         private Button btnDisplay;
-
+        private int savedVol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,8 +102,45 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         //navigationView.setNavigationItemSelectedListener(this);
 
         addListenerOnButton();
-    }
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        volSlider(curVolume);
 
+    }
+    public void volSlider(int passedVol) {
+        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+        SeekBar volControl = (SeekBar) findViewById(R.id.volbar);
+        volControl.setMax(maxVolume);
+
+        if(called && !mute){
+            volControl.setProgress(0);
+            called = false;
+        } else if(tracked){
+            volControl.setProgress(savedVol);
+        } else {
+            volControl.setProgress(passedVol);
+        }
+
+        volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+                savedVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                tracked = true;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+                mute = false;
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
+            }
+        });
+    }
     public void addListenerOnButton() {
 
         btnDisplay = (Button) findViewById(R.id.btnDisplay);
@@ -109,12 +149,15 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
             @Override
             public void onClick(View v) {
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
+                called = true;
+                volSlider(curVolume);
                 StringBuffer result = new StringBuffer();
 
                 int maxVol = 0;
                // Toast.makeText(MainActivity.this, result.toString(),Toast.LENGTH_SHORT).show();
-                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 if(mute){
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(maxVol), 0);
                     mute = false;
