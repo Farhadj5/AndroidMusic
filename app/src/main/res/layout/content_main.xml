@@ -18,21 +18,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_display"
+        android:layout_marginBottom="34dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="30dp" />
+        android:layout_centerHorizontal="true" />
 
     <SeekBar
         android:id="@+id/volbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="200px"
-        android:layout_height="50px"
-        android:max="100"
-        android:progress="3"
+        android:layout_width="400px"
+        android:layout_height="100px"
         android:layout_above="@+id/btnDisplay"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true"
+        android:max="100"
+        android:progress="3" />
 
     <TextView
         android:id="@+id/rate_me"

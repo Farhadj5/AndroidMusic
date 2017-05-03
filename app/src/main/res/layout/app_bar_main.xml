@@ -7,9 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.farhad.softwaregroup.MainActivity">
 
-    <include layout="@layout/content_main"
-        android:id="@+id/include" />
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,25 +21,28 @@
 
         <ImageButton
             android:id="@+id/alarmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="300px"
+            android:layout_height="150px"
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 
         <Button
             android:id="@+id/newsfeed"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="300px"
+            android:layout_height="150px"
             android:text="NewsFeed" />
 
         <Button
             android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300px"
+            android:layout_height="150px"
             android:text="Info" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_main" />
 
 
 </android.support.design.widget.CoordinatorLayout>
