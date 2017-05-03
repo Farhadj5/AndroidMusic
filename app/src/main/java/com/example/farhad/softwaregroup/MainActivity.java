@@ -111,9 +111,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
     }
     public void onResume(){
         super.onResume();
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
         System.out.println("ALARM BOOL RESUME: " + alarmBool);
         if(alarmBool){
-            //SET VOLUME TO MAX HERE.
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
         }
     }
 
