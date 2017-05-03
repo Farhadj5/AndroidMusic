@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private boolean mute = false;
         private boolean called = false;
         private boolean tracked = false;
-        public static boolean alarmBool = false;
+        public static boolean alarmBool;
         private ToggleButton toggleButton1, toggleButton2;
         private Button btnDisplay;
         private Button btnSubmit;
@@ -58,15 +58,16 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private float userRating;
         private String stringRating;
         public static final String KEY_RATING = "rating";
+        private MediaPlayer player = new MediaPlayer();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        alarmBool = false;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         try {
-            MediaPlayer player = new MediaPlayer();
+
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource("http://162.243.192.229:8080/example1.ogg");
             player.setOnPreparedListener(this);
@@ -107,6 +108,13 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
         addListenerOnRatingBar();
 
+    }
+    public void onResume(){
+        super.onResume();
+        System.out.println("ALARM BOOL RESUME: " + alarmBool);
+        if(alarmBool){
+            //SET VOLUME TO MAX HERE.
+        }
     }
 
     public void addListenerOnRatingBar() {

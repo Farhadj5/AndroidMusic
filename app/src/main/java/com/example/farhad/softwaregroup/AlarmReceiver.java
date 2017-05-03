@@ -28,18 +28,17 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-
+        //Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        MainActivity.alarmBool = true;
         //THIS IS HOW WE OPEN THE MAIN ACTIVITY WHEN THE ALARM GOES OFF
-        /*
+
         Intent i = new Intent();
         i.setClassName("com.example.farhad.softwaregroup", "com.example.farhad.softwaregroup.MainActivity");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MainActivity.alarmBool = true;
         context.startActivity(i);
-        */
+
         //THIS JUST PLAYS RINGTONE. COMMENT OUT FOR STREAM MUSIC
-        ringtone.play();
+        //ringtone.play();
 
         //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(),
@@ -59,6 +58,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         }
 
         //ends ringtone
-        ringtone.stop();
+       // ringtone.stop();
     }
 }
