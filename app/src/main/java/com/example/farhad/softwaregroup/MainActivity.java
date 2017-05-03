@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private boolean mute = false;
         private boolean called = false;
         private boolean tracked = false;
+        public static boolean alarmBool = false;
         private ToggleButton toggleButton1, toggleButton2;
         private Button btnDisplay;
         private int savedVol;
@@ -65,22 +66,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         }catch(Exception e){
 
         }
-        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //                .setAction("Action", null).show();
-        //    }
-        //});
-
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();*/
-
-
 
         ImageButton btn = (ImageButton) findViewById(R.id.alarmButton);
 
@@ -182,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this,"Display Info", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this,"Display Info", Toast.LENGTH_LONG).show();
                         String JSON_ARRAY = "result";
                         artist = "";
                         title = "";
@@ -215,13 +200,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
     //modified what back button does
     public void onBackPressed() {
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //if (drawer.isDrawerOpen(GravityCompat.START)) {
-        //    drawer.closeDrawer(GravityCompat.START);
-        //} else {
-            Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(loginActivityIntent);
-        //}
+        moveTaskToBack(true);
     }
 
     //This creates the top right menu, 3 dots
@@ -236,32 +215,5 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
     }
 
 
-
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
 
 }

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,31 +41,32 @@ import static com.example.farhad.softwaregroup.R.id.alarmDatePicker;
 import static com.example.farhad.softwaregroup.R.id.listView;
 
 public class AlarmActivity extends Activity {
-    private int alarmcount = 0;
+    public int alarmcount = 0;
     AlarmManager alarmManager;
-    private ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
+    public static ArrayList<Calendar> calendarArray = new ArrayList<Calendar>();
+    public static ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
     private TimePicker alarmTimePicker;
     private DatePicker alarmDatePicker;
     private static AlarmActivity inst;
     private TextView alarmTextView;
     private ViewFlipper viewFlipper;
+    private static MyCustomAdapter adapter;
 
     //alarm list
     private Calendar calendar = Calendar.getInstance();
     private int year,month,day,hour,minute;
-    private final ArrayList<String> alarms = new ArrayList<String>();
-    ListView listview;
+    private static final ArrayList<String> alarms = new ArrayList<String>();
+    static ListView listview;
 
-    //no idea
     public static AlarmActivity instance() {
         return inst;
     }
 
-    //no idea
     public void onStart() {
         super.onStart();
         inst = this;
     }
+
 
     //sets variables.
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +74,6 @@ public class AlarmActivity extends Activity {
         setContentView(R.layout.activity_alarm);
         alarmTimePicker = (TimePicker) findViewById(R.id.alarmTimePicker);
         alarmDatePicker = (DatePicker) findViewById(R.id.alarmDatePicker);
-        Button alarmSet = (Button) findViewById(R.id.alarmSet);
-        Button create = (Button) findViewById(R.id.createAlarm);
-        Button dateSet = (Button) findViewById(R.id.alarmDateSet);
         viewFlipper = (ViewFlipper) findViewById(R.id.viewflipper);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -82,33 +81,25 @@ public class AlarmActivity extends Activity {
         //alarm list
         listview = (ListView)findViewById(R.id.listView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, alarms);
+        adapter = new MyCustomAdapter(alarms, this,alarmManager,calendarArray);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+         //       android.R.layout.simple_list_item_1, android.R.id.text1, alarms);
 
         listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
 
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listview.getItemAtPosition(position);
-
-
-                // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_SHORT)
-                        .show();
-
-            }
-
-        });
     }
+    /*
+    public void onResume(){
+        super.onResume();
+        listview = (ListView)findViewById(R.id.listView);
 
+        MyCustomAdapter adapter = new MyCustomAdapter(alarms, this,alarmManager,calendarArray);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        //       android.R.layout.simple_list_item_1, android.R.id.text1, alarms);
+
+        listview.setAdapter(adapter);
+    }
+*/
 
     //handles the toggle button code.
     public void onSetClicked(View view) {
@@ -124,6 +115,7 @@ public class AlarmActivity extends Activity {
                 alarmcount = 0;
             PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, alarmcount, myIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            calendarArray.add(calendar);
             intentArray.add(pendingIntent);
             alarmcount++;
             viewFlipper.showNext();
