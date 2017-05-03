@@ -97,14 +97,16 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         toggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    System.out.println("TOGGLE ON" + position);
+                    Toast.makeText(context, "Alarm On!",
+                            Toast.LENGTH_SHORT).show();
 
                     Intent myIntent = new Intent(context, AlarmReceiver.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, position, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC, calendarArray.get(position).getTimeInMillis(), pendingIntent);
                 } else {
                     togglecheck = false;
-                    System.out.println("TOGGLE OFF" + position);
+                    Toast.makeText(context, "Alarm Off!",
+                            Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(context, AlarmReceiver.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, position, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     pendingIntent.cancel();

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Music</string>
+    <string name="app_name">Phoenix Radio</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,7 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main">Android Music</string>
+    <string name="title_activity_main">Phoenix Radio</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

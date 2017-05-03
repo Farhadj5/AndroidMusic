@@ -1,9 +1,11 @@
 package com.example.farhad.softwaregroup;
 
+import android.provider.Settings.Secure;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View.OnClickListener;
 import android.content.Intent;
@@ -46,14 +48,14 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private static final String RATING_URL = "http://162.243.192.229/rating.php";
         private String artist;
         private String title;
-        private boolean mute = false;
-        private boolean called = false;
+        public static boolean mute = false;
+        public static boolean called = false;
         private boolean tracked = false;
         public static boolean alarmBool;
         private ToggleButton toggleButton1, toggleButton2;
         private Button btnDisplay;
         private Button btnSubmit;
-        private int savedVol;
+        private static int savedVol;
         public RatingBar ratingBar;
         private float userRating;
         private String stringRating;
@@ -112,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
     public void onResume(){
         super.onResume();
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        System.out.println("ALARM BOOL RESUME: " + alarmBool);
+        mute = false;
         if(alarmBool){
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
         }
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,"Please select a star before pressing submit!",Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override

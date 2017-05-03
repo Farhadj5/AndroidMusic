@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.ListActivity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -86,6 +88,9 @@ public class AlarmActivity extends Activity {
          //       android.R.layout.simple_list_item_1, android.R.id.text1, alarms);
 
         listview.setAdapter(adapter);
+        addListenerOnButton();
+
+
 
     }
     /*
@@ -100,7 +105,30 @@ public class AlarmActivity extends Activity {
         listview.setAdapter(adapter);
     }
 */
+    public void addListenerOnButton() {
 
+        Button aMute = (Button) findViewById(R.id.alarmmute);
+
+        aMute.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+                int maxVol = 0;
+                // Toast.makeText(MainActivity.this, result.toString(),Toast.LENGTH_SHORT).show();
+                if(MainActivity.mute){
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(maxVol), 0);
+                    MainActivity.mute = false;
+                } else {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+                    MainActivity.mute = true;
+                }
+            }
+
+        });
+    }
     //handles the toggle button code.
     public void onSetClicked(View view) {
             year = alarmDatePicker.getYear();

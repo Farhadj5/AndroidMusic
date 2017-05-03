@@ -28,7 +28,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-        //Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
         MainActivity.alarmBool = true;
         //THIS IS HOW WE OPEN THE MAIN ACTIVITY WHEN THE ALARM GOES OFF
 
@@ -58,6 +58,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         }
 
         //ends ringtone
-       // ringtone.stop();
+        //ringtone.stop();
     }
 }
