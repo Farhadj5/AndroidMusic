@@ -89,7 +89,12 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
                 startActivity(new Intent(MainActivity.this, AlarmActivity.class));
             }
         });
-
+        Button b2 = (Button) findViewById(R.id.newsfeed);
+        b2.setOnClickListener(new View.OnClickListener() {
+                                  public void onClick(View v) {
+                                      startActivity(new Intent(MainActivity.this, NewsFeed.class));
+                                  }
+                              });
         Button infoButton = (Button) findViewById(R.id.info);
 
         infoButton.setOnClickListener(new View.OnClickListener() {
