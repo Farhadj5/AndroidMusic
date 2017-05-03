@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.view.MotionEvent;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -41,6 +43,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener{
         //implements NavigationView.OnNavigationItemSelectedListener {
         private static final String PARSE_URL = "http://162.243.192.229/parse.php";
+        private static final String RATING_URL = "http://162.243.192.229/rating.php";
         private String artist;
         private String title;
         private boolean mute = false;
@@ -48,7 +51,12 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         private boolean tracked = false;
         private ToggleButton toggleButton1, toggleButton2;
         private Button btnDisplay;
+        private Button btnSubmit;
         private int savedVol;
+        public RatingBar ratingBar;
+        private float userRating;
+        private String stringRating;
+        public static final String KEY_RATING = "rating";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,11 +115,41 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         //navigationView.setNavigationItemSelectedListener(this);
 
         addListenerOnButton();
+        addListenerOnSubmitButton();
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         volSlider(curVolume);
 
+        addListenerOnRatingBar();
+
     }
+
+    public void addListenerOnRatingBar() {
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                userRating = ratingBar.getRating();
+                if(userRating == 1){
+                    stringRating = "1";
+                } else if(userRating == 2){
+                    stringRating = "2";
+                } else if(userRating == 3){
+                    stringRating = "3";
+                } else if(userRating == 4){
+                    stringRating = "4";
+                } else if(userRating == 5){
+                    stringRating = "5";
+                }
+            }
+        });
+    }
+
     public void volSlider(int passedVol) {
         final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -146,6 +184,46 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
             }
         });
     }
+
+    public void addListenerOnSubmitButton() {
+        btnSubmit = (Button) findViewById(R.id.submit);
+
+        btnSubmit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rateSong();
+            }
+        });
+    }
+
+    public void rateSong(){
+        final String rating = stringRating;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, RATING_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this,"Rating Saved!", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(KEY_RATING,rating);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
     public void addListenerOnButton() {
 
         btnDisplay = (Button) findViewById(R.id.btnDisplay);
@@ -177,12 +255,10 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
     public void showInfo(){
 
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, PARSE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this,"Display Info", Toast.LENGTH_LONG).show();
                         String JSON_ARRAY = "result";
                         artist = "";
                         title = "";
@@ -193,8 +269,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
                             JSONObject songTitle = result.getJSONObject(1);
                             artist = songArtist.getString("artist");
                             title = songTitle.getString("title");
-
-                            Toast.makeText(MainActivity.this,"Artist: " + artist + " Title: " + title, Toast.LENGTH_LONG).show();
+                            title = title.trim();
+                            Toast.makeText(MainActivity.this,"Artist: " + artist + "\nTitle: " + title, Toast.LENGTH_LONG).show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
