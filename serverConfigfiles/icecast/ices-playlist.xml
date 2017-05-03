@@ -58,7 +58,7 @@
                 the source password and mountpoint.  -->
             <hostname>162.243.192.229</hostname>
             <port>8080</port>
-            <password>c$377e</password>
+            <password>*****</password>
             <mount>/example1.ogg</mount>
 
             <!-- Reconnect parameters:

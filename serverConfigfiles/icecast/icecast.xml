@@ -34,13 +34,13 @@
 
     <authentication>
         <!-- Sources log in with username 'source' -->
-        <source-password>c$377e</source-password>
+        <source-password>*****</source-password>
         <!-- Relays log in with username 'relay' -->
-        <relay-password>c$377e</relay-password>
+        <relay-password>*****</relay-password>
 
         <!-- Admin logs in with the username given below -->
         <admin-user>admin</admin-user>
-        <admin-password>c$377e</admin-password>
+        <admin-password>*****</admin-password>
     </authentication>
 
     <!-- set the mountpoint for a shoutcast source to use, the default if not
